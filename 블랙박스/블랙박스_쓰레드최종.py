@@ -117,7 +117,7 @@ if __name__ == "__main__":
 
         if key == ord('q'):
             running = False
-            timer.join()
+            timer.join(timeout=0)
             
 
         # 3. 현재 폴더의 용량이 5mb가 되면 가장 오래된 파일 지우기 
