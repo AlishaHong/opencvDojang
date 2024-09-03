@@ -54,9 +54,15 @@ end_time = datetime.now() + timedelta(seconds = 10)
 while(True):
     
     create_filename()
+
     
     folder_path = 'C:/Users/user/Desktop/REPOSITORY/opencvDojang/blackbox'
     now = datetime.now()
+
+    # 2. 폴더 생성은 날짜+현재시간
+    # 20240902-16 00분 ~ 59분
+    # 한시간마다 폴더 생성
+
     folder_name = now.strftime('%Y%m%d' + '-' + str(now.hour) + '시')
 
 
@@ -110,47 +116,9 @@ while(True):
         break
     
 
-    # while (end_time - datetime.now()).total_seconds() > 0:
-    #     # endtime과 현재시간이 같을때 까지 반복
-
-    #     ret,frame = cap.read()
-    #     if not ret:
-    #         break
-
-    #     out.write(frame)
-    #     cv2.imshow('blackbox', frame)
-
-            
-    #     key = cv2.waitKey(30)
-    #     if key == ord('q'):
-    #         break
-    
-    # if key == ord('q'):
-    #     break
-    
-    # 녹화 시작한 시간과 끝나는 시간의 차가 11초가 될떄까지 반복하는것도 괜찮을듯 
-    
-    
-    
 
     # 3. 현재 폴더의 용량이 5mb가 되면 가장 오래된 파일 지우기 
-
-    # os.walk 함수(복잡한듯..)
     
-    # for root, dirs, files in os.walk('C:/Users/user/Desktop/REPOSITORY/opeㅂcvDojang/blackbox'):
-    #     folder_size = sum([getsize(join(root, name)) for name in files]) / (1024.0 * 1024.0)
-
-    #     print(folder_size)
-    #     print(root)
-    #     print(dirs)
-    #     if folder_size >= 5:
-    #         print(files)
-    #         oldest_file = files[0]
-    #         print("Oldest file is: ", files[0])
-    #         os.remove('C:/Users/user/Desktop/REPOSITORY/opencvDojang/blackbox/' + oldest_file)
-
-
-
     # os.listdir 함수
     path = 'C:/Users/user/Desktop/REPOSITORY/opencvDojang/blackbox'
     new_path = os.path.join(path, new_folder)
