@@ -19,7 +19,7 @@ import schedule
 import threading
 
 
-record_time = 60  # 녹화시간
+record_time = 10  # 녹화시간
 
 # 파일명 만들어주는 함수가 필요 
 def create_filename():
@@ -27,7 +27,6 @@ def create_filename():
     now = datetime.now()
     filename = now.strftime('%Y%m%d-%H%M%S') + '.avi'
     return filename
-
 
 def make_folder():
     folder_path = 'C:/Users/user/Desktop/REPOSITORY/opencvDojang/blackbox'
@@ -51,16 +50,14 @@ cap.set(cv2.CAP_PROP_FPS, 30)
 # # FPS 가져오기
 fps = cap.get(cv2.CAP_PROP_FPS)
 
-# 녹화시간 타이머 스레드 함수
 def timer_thread(stop_event):
-    # global running
-    # while running:
-    #     time.sleep(1)  # 60초 (1분) 대기
-    time.sleep(record_time)  # record_time 대기  --> 오래 기다리던 기존의 코드
-    #### 이렇게 하지 않으면 파일이 무한 녹화됨..
-    
+    global running
+    for _ in range(record_time):
+        if not running:  # running이 False이면 바로 종료
+            break
+        time.sleep(1)
     stop_event.set()  # 이벤트 설정 (녹화 중지)
-    
+
 
 # 파일을 직접 실행 시 메인 함수부터 실행됨 
 # 명시적으로 지정해두는 것이 가독성도 좋다.
