@@ -9,6 +9,8 @@
 
 # 3. 블랙박스 녹화 폴더가 3GB이면 가장 오래된 녹화 폴더 삭제 
 
+# 4. Thread 적용하여 record_time변수의 값과 실제 녹화영상의 길이가 같도록 한다. 
+
 
 import cv2, sys
 import time
@@ -19,7 +21,7 @@ import schedule
 import threading
 
 
-record_time = 60 # 녹화시간
+record_time = 10 # 녹화시간
 
 # 파일명 만들어주는 함수가 필요 
 def create_filename():
@@ -28,9 +30,7 @@ def create_filename():
     filename = now.strftime('%Y%m%d-%H%M%S') + '.avi'
     return filename
 
-def make_folder():
-    folder_path = 'C:/Users/user/Desktop/REPOSITORY/opencvDojang/blackbox'
-    # 현재시각 확인
+def make_folder(folder_path):
     now = datetime.now()
     folder_name = now.strftime('%Y%m%d' + '-' + str(now.hour) + '시')
     schedule.every().hour.do(make_folder)
@@ -38,16 +38,18 @@ def make_folder():
         os.makedirs(os.path.join(folder_path,folder_name))
         print(f"'{folder_name}' 폴더가 생성되었습니다.")
 
+# 최신 폴더 확인
+def latestFolderCheck():
+    latest_folder = max(os.listdir(folder_path), key=lambda f: os.path.getctime(os.path.join(folder_path, f)))
+    return latest_folder
 
 # videoCapture 클래스 객체 생성 및 호출 
 cap = cv2.VideoCapture(0)
-
-# # 영상 크기 조절
+# 영상 크기 조절
 cap.set(cv2.CAP_PROP_FRAME_WIDTH,300)
 cap.set(cv2.CAP_PROP_FRAME_HEIGHT,200)
 cap.set(cv2.CAP_PROP_FPS, 30)
-
-# # FPS 가져오기
+# FPS 가져오기
 fps = cap.get(cv2.CAP_PROP_FPS)
 
 def timer_thread(stop_event):
@@ -71,28 +73,23 @@ if __name__ == "__main__":
         timer = threading.Thread(target=timer_thread, args=(stop_recording,))
         timer.start()
         
-        # 녹화 파일 생성
+        # 녹화 파일명 만들기
         create_filename()
 
         folder_path = 'C:/Users/user/Desktop/REPOSITORY/opencvDojang/blackbox'
         
-        make_folder()
-        
-        # 가장 최근에 만들어진 파일(폴더) 확인하기 
-        new_folder = max(os.listdir(folder_path), key=lambda f: os.path.getctime(os.path.join(folder_path, f)))
-        print(new_folder)
-        
+        # 폴더생성
+        # 프로그램 실행 상태일때 한시간에 한번씩 생성
+        make_folder(folder_path)
         
         # 영상 저장할때는 프레임 사이즈도 읽어온다.
         framesize = (int(cap.get(cv2.CAP_PROP_FRAME_WIDTH)),int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT)))
-
         # 코덱설정
         fourcc = cv2.VideoWriter_fourcc(*'XVID')
         # 영상저장 생성자
-        output_path = os.path.join(folder_path, new_folder, create_filename())
+        output_path = os.path.join(folder_path, latestFolderCheck(), create_filename())
         out = cv2.VideoWriter(output_path + create_filename(), fourcc, fps, framesize)
         print(framesize)
-
 
         recording = True
         while recording:
@@ -121,13 +118,7 @@ if __name__ == "__main__":
         # 용량 확인 주기 추가해야함 
         
         # os.listdir 함수
-        path = 'C:/Users/user/Desktop/REPOSITORY/opencvDojang/blackbox'
-        
-        # 가장 최근에 만들어진 파일(폴더) 확인하기 
-        new_folder = max(os.listdir(folder_path), key=lambda f: os.path.getctime(os.path.join(folder_path, f)))
-        print(new_folder)
-        
-        new_path = os.path.join(path, new_folder)   # blackbox 폴더의 하위 폴더로 시간별 폴더를 생성했기 때문에 두 폴더를 결합해 하위폴더 경로를 만든다.
+        new_path = os.path.join(folder_path, latestFolderCheck())   # blackbox 폴더의 하위 폴더로 시간별 폴더를 생성했기 때문에 두 폴더를 결합해 하위폴더 경로를 만든다.
         max_size = 500  #500MB
         
         # blackbox 폴더의 하위폴더로 진입해 모든 파일의 용량을 더해주는 코드
