@@ -30,7 +30,7 @@ import schedule
 import threading
 
 
-record_time = 60 # 녹화시간
+record_time = 10 # 녹화시간
 
 # 파일명 만들어주는 함수가 필요 
 def create_filename():
@@ -53,13 +53,24 @@ def latestFolderCheck():
     return latest_folder
 
 # videoCapture 클래스 객체 생성 및 호출 
-cap = cv2.VideoCapture(0)
+# cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(1, cv2.CAP_DSHOW)
+
+# for i in range(2):
+#     cap = cv2.VideoCapture(i, cv2.CAP_DSHOW)
+#     if cap.isOpened():
+#         print(f"카메라 {i}번이 연결되었습니다.")
+#         cap.release()
+#     else:
+#         print(f"카메라 {i}번을 열 수 없습니다.")
 # 영상 크기 조절
+
 cap.set(cv2.CAP_PROP_FRAME_WIDTH,300)
 cap.set(cv2.CAP_PROP_FRAME_HEIGHT,200)
 cap.set(cv2.CAP_PROP_FPS, 30)
 # FPS 가져오기
 fps = cap.get(cv2.CAP_PROP_FPS)
+
 
 def timer_thread(stop_event):
     global running
@@ -127,7 +138,7 @@ if __name__ == "__main__":
         
         # os.listdir 함수
         new_path = os.path.join(folder_path, latestFolderCheck())   # blackbox 폴더의 하위 폴더로 시간별 폴더를 생성했기 때문에 두 폴더를 결합해 하위폴더 경로를 만든다.
-        max_size = 500  #500MB
+        max_size = 1  #500MB
         
         # blackbox 폴더의 하위폴더로 진입해 모든 파일의 용량을 더해주는 코드
         for name in os.listdir(new_path):
