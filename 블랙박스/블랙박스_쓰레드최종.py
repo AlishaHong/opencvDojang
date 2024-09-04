@@ -19,7 +19,7 @@ import schedule
 import threading
 
 
-record_time = 10  # 녹화시간
+record_time = 60 # 녹화시간
 
 # 파일명 만들어주는 함수가 필요 
 def create_filename():
@@ -85,7 +85,7 @@ if __name__ == "__main__":
         
         # 영상 저장할때는 프레임 사이즈도 읽어온다.
         framesize = (int(cap.get(cv2.CAP_PROP_FRAME_WIDTH)),int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT)))
-        framesize = (int(cap.get(cv2.CAP_PROP_FRAME_WIDTH)),int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT)))
+
         # 코덱설정
         fourcc = cv2.VideoWriter_fourcc(*'XVID')
         # 영상저장 생성자
