@@ -7,9 +7,18 @@
 # 20240902-16 00분 ~ 59분
 # 한시간마다 폴더 생성
 
-# 3. 블랙박스 녹화 폴더가 3GB이면 가장 오래된 녹화 폴더 삭제 
+# 3. 블랙박스 녹화 폴더가 500MB이면 가장 오래된 녹화 폴더 삭제 
 
 # 4. Thread 적용하여 record_time변수의 값과 실제 녹화영상의 길이가 같도록 한다. 
+
+
+
+# updated 0904
+
+# 리팩토링 예정 
+# - 용량 확인하는 주기를 설정(큰 용량을 관리할 경우 성능저하)
+# - 객체 생성 및 영상저장 생성자 메서드추가 
+# - 최신 파일을 확인할때 인덱스로 검색하지 않고 함수로 변경예정 
 
 
 import cv2, sys
@@ -21,7 +30,7 @@ import schedule
 import threading
 
 
-record_time = 10 # 녹화시간
+record_time = 60 # 녹화시간
 
 # 파일명 만들어주는 함수가 필요 
 def create_filename():
@@ -108,13 +117,12 @@ if __name__ == "__main__":
             if stop_recording.is_set():
                 recording = False
         
-
         if key == ord('q'):
             running = False
             timer.join(timeout=0)
             
 
-        # 3. 현재 폴더의 용량이 5mb가 되면 가장 오래된 파일 지우기 
+        # 3. 현재 폴더의 용량이 500mb가 되면 가장 오래된 파일 지우기 
         # 용량 확인 주기 추가해야함 
         
         # os.listdir 함수
