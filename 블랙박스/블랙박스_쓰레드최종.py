@@ -54,17 +54,10 @@ def latestFolderCheck():
 
 # videoCapture 클래스 객체 생성 및 호출 
 # cap = cv2.VideoCapture(0)
+# 영상녹화가 늦어지는 점 개선
 cap = cv2.VideoCapture(1, cv2.CAP_DSHOW)
 
-# for i in range(2):
-#     cap = cv2.VideoCapture(i, cv2.CAP_DSHOW)
-#     if cap.isOpened():
-#         print(f"카메라 {i}번이 연결되었습니다.")
-#         cap.release()
-#     else:
-#         print(f"카메라 {i}번을 열 수 없습니다.")
-# 영상 크기 조절
-
+# 크기 조절
 cap.set(cv2.CAP_PROP_FRAME_WIDTH,300)
 cap.set(cv2.CAP_PROP_FRAME_HEIGHT,200)
 cap.set(cv2.CAP_PROP_FPS, 30)
