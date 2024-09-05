@@ -19,13 +19,15 @@ def on_trackbar(pos):
     
     # 마스크를 반전하여 특정 색상 범위만 제외한 마스크 생성
     mask_inv = cv2.bitwise_not(mask)
+    
+    # 마스크를 사용하여 특정 색상 제외한 새로운 이미지 생성
     result_inv = cv2.bitwise_and(src,src, mask=mask_inv)
 
     cv2.imshow('Trackbar', mask)
     # cv2.imshow('result', result)
     cv2.imshow('result_inv',result_inv)
     return hmin,hmax
-    
+      
     
 def mask_print():
     cv2.imshow()
