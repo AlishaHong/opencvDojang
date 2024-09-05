@@ -42,7 +42,9 @@ def create_filename():
 def make_folder(folder_path):
     now = datetime.now()
     folder_name = now.strftime('%Y%m%d' + '-' + str(now.hour) + '시')
+    # 한시간에 한번 폴더생성 함수가 실행되도록 
     schedule.every().hour.do(make_folder)
+    # 폴더 중복생성 확인
     if not os.path.exists(os.path.join(folder_path,folder_name)):
         os.makedirs(os.path.join(folder_path,folder_name))
         print(f"'{folder_name}' 폴더가 생성되었습니다.")
