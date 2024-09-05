@@ -30,7 +30,7 @@ import schedule
 import threading
 
 
-record_time = 10 # 녹화시간
+record_time = 60 # 녹화시간
 
 # 파일명 만들어주는 함수가 필요 
 def create_filename():
@@ -131,7 +131,7 @@ if __name__ == "__main__":
         
         # os.listdir 함수
         new_path = os.path.join(folder_path, latestFolderCheck())   # blackbox 폴더의 하위 폴더로 시간별 폴더를 생성했기 때문에 두 폴더를 결합해 하위폴더 경로를 만든다.
-        max_size = 1  #500MB
+        max_size = 500  #500MB
         
         # blackbox 폴더의 하위폴더로 진입해 모든 파일의 용량을 더해주는 코드
         for name in os.listdir(new_path):
