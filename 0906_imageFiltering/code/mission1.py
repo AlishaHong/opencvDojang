@@ -78,7 +78,7 @@ sharpened_image_fast_src1 = cv2.filter2D(fast_dst1, -1, kernel_sharpening)
 sharpened_image_fast_src2 = cv2.filter2D(fast_dst2, -1, kernel_sharpening)
 sharpened_image_fast_src3 = cv2.filter2D(fast_dst3, -1, kernel_sharpening)  
 sharpened_image_fast_src3_kernel2= cv2.filter2D(fast_dst3, -1, kernel_sharpening2)
-sharpened_image_fast_src2_kernel2= cv2.filter2D(fast_dst2, -1, kernel_sharpening2)  #얘가 제일 맘에듬 
+sharpened_image_fast_src2_kernel2= cv2.filter2D(fast_dst2, -1, kernel_sharpening2) # 얘가 제일 맘에 듬 여기서 명도채도 조절
 
 
 # 밝기를 조금만 어둡게 
@@ -110,7 +110,7 @@ cv2.imshow('sharpened_image_fast_src1', sharpened_image_fast_src1)
 cv2.imshow('sharpened_image_fast_src2', sharpened_image_fast_src2)
 cv2.imshow('sharpened_image_fast_src3', sharpened_image_fast_src3)
 cv2.imshow('sharpened_image_fast_src3_kernel2', sharpened_image_fast_src3_kernel2)
-cv2.imshow('sharpened_image_fast_src2_kernel2', sharpened_image_fast_src2_kernel2)  #얘가 제일 맘에듬 
+cv2.imshow('sharpened_image_fast_src2_kernel2', sharpened_image_fast_src2_kernel2)  
 cv2.imshow('Adjusted Saturation', adjusted_bgr_image)
 
 cv2.waitKey()
