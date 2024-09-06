@@ -70,10 +70,12 @@ fps = cap.get(cv2.CAP_PROP_FPS)
 def timer_thread(stop_event):
     global running
     for _ in range(record_time):
-        if not running:  # running이 False이면 바로 종료
+        if running == False:  # running이 False이면 바로 종료
             break
         time.sleep(1)
-    stop_event.set()  # 이벤트 설정 (녹화 중지)
+    stop_event.set()  
+    # stop_event가 셋이 되면 녹화를 중단하는 코드는 아래에 있음
+    # 이벤트 설정 (녹화 중지)
     # Event객체는 스레드 간에 통신을 할 수 있게 해주는 동기화 도구로 쓰레드가 특정조건이 발생할때까지 기다리거나 진행을 멈추는데 사용
 
 # 파일을 직접 실행 시 메인 함수부터 실행됨 

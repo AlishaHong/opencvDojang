@@ -3,7 +3,7 @@ import sys
 import numpy as np
 
 # 이미지 불러오기
-image = cv2.imread('data2/yellow_light.jpg')  # 불특정 이미지 파일 경로
+image = cv2.imread('data2/green_light.jpg')  # 불특정 이미지 파일 경로
 if image is None:
     print('Image not found!')
     sys.exit()
@@ -39,6 +39,7 @@ mask_yellow = cv2.inRange(hsv, lower_yellow, upper_yellow)
 mask_green = cv2.inRange(hsv, lower_green, upper_green)
 
 # 각 마스크에서 255 값의 픽셀 수 계산
+# countNonZero - 배열/이미지에서 0이 아닌 값의 개수를 세는 함수 
 red_pixels = cv2.countNonZero(mask_red)
 yellow_pixels = cv2.countNonZero(mask_yellow)
 green_pixels = cv2.countNonZero(mask_green)

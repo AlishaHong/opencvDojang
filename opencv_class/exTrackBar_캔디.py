@@ -13,8 +13,8 @@ def on_trackbar(pos):
     dst = cv2.inRange(src_hsv, (hmin,150,0), (hmax,255,255))
     cv2.imshow('Trackbar', dst)
 
-# src = cv2.imread('data2/candies.png')
-src = cv2.imread('data2/3색.jpg')
+src = cv2.imread('data2/candies.png')
+# src = cv2.imread('data2/3색.jpg')
 
 if src is None:
     sys.exit('Image load failed!')
@@ -23,7 +23,6 @@ if src is None:
 src_hsv = cv2.cvtColor(src,cv2.COLOR_BGR2HSV)
 
 # 창에 트랙바를 넣기 위해서는 창을 먼저 생성
-cv2.namedWindow('trackbar')
 cv2.imshow('Trackbar', src)
 cv2.imshow('src',src)
 
