@@ -29,7 +29,6 @@ def on_trackbar(pos):
     # cv2.imshow('result', result)
     cv2.imshow('result_inv',result_inv)
     return hmin,hmax
-      
     
 def mask_print():
     cv2.imshow()
