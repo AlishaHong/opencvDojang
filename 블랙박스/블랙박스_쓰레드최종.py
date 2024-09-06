@@ -16,7 +16,7 @@
 # updated 0904
 
 # 리팩토링 예정 
-# - 용량 확인하는 주기를 설정(큰 용량을 관리할 경우 성능저하)
+# - 용량 확인하는 주기리를 설정(큰 용량을 관할 경우 성능저하) - 쓰레드 활용하기 
 # - 객체 생성 및 영상저장 생성자 메서드추가 
 # - 최신 파일을 확인할때 인덱스로 검색하지 않고 함수로 변경예정 
 
@@ -74,7 +74,7 @@ def timer_thread(stop_event):
             break
         time.sleep(1)
     stop_event.set()  # 이벤트 설정 (녹화 중지)
-
+    # Event객체는 스레드 간에 통신을 할 수 있게 해주는 동기화 도구로 쓰레드가 특정조건이 발생할때까지 기다리거나 진행을 멈추는데 사용
 
 # 파일을 직접 실행 시 메인 함수부터 실행됨 
 # 명시적으로 지정해두는 것이 가독성도 좋다.
@@ -83,7 +83,9 @@ if __name__ == "__main__":
     while(True):
         # 녹화 중지 이벤트 생성
         stop_recording = threading.Event()
-
+        # Event객체를 생성 
+        # Event객체는 스레드 간에 통신을 할 수 있게 해주는 동기화 도구로 쓰레드가 특정조건이 발생할때까지 기다리거나 진행을 멈추는데 사용
+        # 2가지 상태를 가짐 : set - 이벤트가 발생/clear - 이벤트가 발생하지 않은 상태  
         # 타이머 스레드 생성 및 시작
         timer = threading.Thread(target=timer_thread, args=(stop_recording,))
         timer.start()
