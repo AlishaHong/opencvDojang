@@ -22,6 +22,8 @@ def on_trackbar(pos):
     
     # 마스크를 사용하여 특정 색상 제외한 새로운 이미지 생성
     result_inv = cv2.bitwise_and(src,src, mask=mask_inv)
+    # src와 src의 and 연산 
+    # 원본이미지에 영향을 주지 않음 
 
     cv2.imshow('Trackbar', mask)
     # cv2.imshow('result', result)
@@ -40,12 +42,14 @@ if src is None:
     
 hsv_src = cv2.cvtColor(src, cv2.COLOR_BGR2HSV)
 cv2.imshow('src', src)
+
 cv2.namedWindow('Trackbar')
-
-
+# H_min이라는 이름의 트랙바를 'Trackbar' 창에 생성 
 cv2.createTrackbar('H_min', 'Trackbar', 0, 180, on_trackbar)
 cv2.createTrackbar('H_max', 'Trackbar', 0, 180, on_trackbar)
 on_trackbar(0)
+# 0을 넣는 이유는 트랙바값이 아직 변하지 않았기 때문에 초기값을 임의로 설정함 
+# 다른값으로 설정해도 상관없음 
 
 
 key = cv2.waitKey(0)
