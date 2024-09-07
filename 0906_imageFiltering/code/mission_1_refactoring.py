@@ -28,6 +28,8 @@ def apply_sharpening(image, kernel):
     return cv2.filter2D(image, -1, kernel)
 
 # 밝기 및 채도 조정 함수
+# 기본값을 준 상태 
+# 기본값을 없애고 함수 호춢 시 원하는 스케일을 입력하여 밝기/채도/명도를 한번에 조정할 수 있음 
 def adjust_brightness_and_saturation(image, brightness_adjust=-20, saturation_scale=0.90, brightness_scale=0.65):
     # 밝기 조정 (BGR -> HSV 변환 후 처리)
     hsv_image = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
@@ -57,7 +59,9 @@ def main():
     fast_dst = apply_fast_denoising(src, 8, 8, 7, 21)
 
     # 샤프닝 필터 적용 (두 가지 커널 제공)
+    # 기본 
     kernel_sharpening = np.array([[-1, -1, -1], [-1, 9, -1], [-1, -1, -1]])
+    # 좀 더 부드러움 
     kernel_sharpening2 = np.array([[0, -1, 0], [-1, 5, -1], [0, -1, 0]])
 
     sharpened_image_fast_dst = apply_sharpening(fast_dst, kernel_sharpening2)
