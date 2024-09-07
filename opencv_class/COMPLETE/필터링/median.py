@@ -8,10 +8,10 @@ if src is None:
     sys.exit('image load failed')
 
 
-
-dst = cv2.medianBlur(src, 3)    # 효과적
-dst1 = cv2.bilateralFilter(src,10,50,50)
 # 이미지, 커널크기 
+dst = cv2.medianBlur(src, 3)    # 효과적
+# 양방향 필터와 비교 
+dst1 = cv2.bilateralFilter(src,10,50,50)
 
 
 cv2.imshow('src',src)

@@ -7,14 +7,14 @@ import numpy as np
 # brightness 조절
 # 명도/채도 조절
 
-
+# 샤프닝 
 
 src = cv2.imread('0906_imageFiltering/data/05.png')
 src_hsv = cv2.cvtColor(src,cv2.COLOR_BGR2HSV)
 
 dst1 = cv2.add(src, (-50,-50,-50)) 
 dst2 = cv2.add(src, (-30,-30,-30)) 
-dst3 = cv2.add(src, (-20,-20,-20)) 
+dst3 = cv2.add(src, (-10,-10,-10)) 
 
 # BGR -> HSV 변환
 hsv_image = cv2.cvtColor(dst3, cv2.COLOR_BGR2HSV)
@@ -23,7 +23,7 @@ hsv_image = cv2.cvtColor(dst3, cv2.COLOR_BGR2HSV)
 h, s, v = cv2.split(hsv_image)
 
 # 채도/명도 값 줄이기
-v = cv2.multiply(v, 0.75)
+v = cv2.multiply(v, 0.70)
 s = cv2.multiply(s, 0.90)
 
 # 채널 병합 (H, S, V)

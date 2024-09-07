@@ -26,6 +26,7 @@ pixMin, pixMax, _, _ = cv2.minMaxLoc(src)
 dst1 = cv2.normalize(src,None,0,255,cv2.NORM_MINMAX)
 pixMin, pixMax, _, _ = cv2.minMaxLoc(dst1)
 print(pixMin, pixMax)   #0.0,255.0(정규화됨)
+
 # normalize 후
 hist2 = cv2.calcHist([dst1], [0], None, [256], [0,256])
 hist3 = cv2.calcHist([src], [0], None, [256], [0,256])

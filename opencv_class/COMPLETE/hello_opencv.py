@@ -27,7 +27,7 @@ cv2.imshow('image_bgr', img_bgr)
 cv2.imshow('image_gray', img_gray)
 
 # 키 입력을 기다리는 함수 
-cv2.waitKey(2000) # 1초만 기다리고 모든창을 닫음
+cv2.waitKey() # 1초만 기다리고 모든창을 닫음
                   # 지연값 없으면 무한 대기 
 
 

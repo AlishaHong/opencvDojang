@@ -8,6 +8,7 @@ import numpy as np
 # 명도/채도 조절
 
 
+# 강한 블러 적용 후 샤프닝 해보기 
 
 # median blur - 별로
 
@@ -56,10 +57,10 @@ fast_dst1 = cv2.fastNlMeansDenoisingColored(fast_src,None,10,10,7,21)
 fast_dst2 = cv2.fastNlMeansDenoisingColored(fast_src,None,8,8,7,21)
 fast_dst3 = cv2.fastNlMeansDenoisingColored(fast_src,None,5,5,7,21)
 
-# cv2.imshow('fast_src',fast_src)
-# cv2.imshow('fast_dst1',fast_dst1)
-# cv2.imshow('fast_dst2',fast_dst2)
-# cv2.imshow('fast_dst3',fast_dst3)
+cv2.imshow('fast_src',fast_src)
+cv2.imshow('fast_dst1',fast_dst1)
+cv2.imshow('fast_dst2',fast_dst2)
+cv2.imshow('fast_dst3',fast_dst3)
 
 
 # 지피티가 알려준 커널(심하게 날카로운 느낌)
@@ -106,12 +107,12 @@ cv2.imwrite('0906_imageFiltering/data/mission1_complete.png', adjusted_bgr_image
 
 
 # 결과출력
-cv2.imshow('sharpened_image_fast_src1', sharpened_image_fast_src1)
-cv2.imshow('sharpened_image_fast_src2', sharpened_image_fast_src2)
-cv2.imshow('sharpened_image_fast_src3', sharpened_image_fast_src3)
-cv2.imshow('sharpened_image_fast_src3_kernel2', sharpened_image_fast_src3_kernel2)
-cv2.imshow('sharpened_image_fast_src2_kernel2', sharpened_image_fast_src2_kernel2)  
-cv2.imshow('Adjusted Saturation', adjusted_bgr_image)
+# cv2.imshow('sharpened_image_fast_src1', sharpened_image_fast_src1)
+# cv2.imshow('sharpened_image_fast_src2', sharpened_image_fast_src2)
+# cv2.imshow('sharpened_image_fast_src3', sharpened_image_fast_src3)
+# cv2.imshow('sharpened_image_fast_src3_kernel2', sharpened_image_fast_src3_kernel2)
+# cv2.imshow('sharpened_image_fast_src2_kernel2', sharpened_image_fast_src2_kernel2)  
+# cv2.imshow('Adjusted Saturation', adjusted_bgr_image)
 
 cv2.waitKey()
 cv2.destroyAllWindows()

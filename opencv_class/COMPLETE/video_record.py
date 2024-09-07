@@ -1,12 +1,11 @@
 # 컨셉은 webcam에서부터 들어오는 영상을 녹화
-# 우리가 웹캠이 없으니(난 있음 ㅎ) 비디오 파일을 열어서 사용하는 것으로 대체 
+# 우리가 웹캠이 없으니(난 있음) 비디오 파일을 열어서 사용하는 것으로 대체 
 
 
 import cv2,sys
 
 
 isWEBCAM = True
-
 
 if isWEBCAM:
     cap = cv2.VideoCapture(0)

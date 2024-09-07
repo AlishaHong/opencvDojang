@@ -15,10 +15,12 @@ if not isColor :
     hist2 = cv2.calcHist([src2], [0], None, [256], [0,256])
     cv2.imshow('src1', src1)
     cv2.imshow('src2', src2)
-    plt.plot(hist1)
-    plt.plot(hist2)
-    # print(type(hist1))   # numpy 배열
-    plt.show()  
+    # 히스토그램을 그래프에 라벨을 달아 표시
+    plt.plot(hist1, label='Original Image')
+    plt.plot(hist2, label='Normalized Image')
+    
+    plt.legend()  # 범례 추가
+    plt.show()
 
 if isColor:
     src = cv2.imread('data/lena.bmp')

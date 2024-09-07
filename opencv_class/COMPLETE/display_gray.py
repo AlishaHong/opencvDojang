@@ -14,6 +14,7 @@ print(imgColor.shape)   #(405,425,3)
 
 plt.axis('off')
 plt.imshow(imgGray, cmap = 'gray')  #cmap 생략하면 이상한 색의 고양이가 출력됨 
+# plt.imshow(imgGray) 
 plt.show()
 
 #interpolation 

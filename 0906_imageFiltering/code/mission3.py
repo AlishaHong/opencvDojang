@@ -8,6 +8,9 @@ import numpy as np
 # fastNlMeansDenoisingColored로 노이즈 제거 
 # 명도/채도 조절
 
+
+# 샤프닝
+
 src = cv2.imread('0906_imageFiltering/data/03.png')
 
 dst1 = cv2.add(src, (10,10,10))
@@ -22,7 +25,7 @@ dst3 = cv2.add(src, (30,30,30))
 # dst1번의 밝기가 마음에 들었음
 # 여기에서 필터링을 하겠음 
 
-fast_dst1 = cv2.fastNlMeansDenoisingColored(dst1,None,1,1,7,21) 
+fast_dst1 = cv2.fastNlMeansDenoisingColored(dst1,None,3,3,7,21) 
 
 # BGR -> HSV 변환
 hsv_image = cv2.cvtColor(fast_dst1, cv2.COLOR_BGR2HSV)

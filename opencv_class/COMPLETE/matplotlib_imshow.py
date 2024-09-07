@@ -21,5 +21,5 @@ imgRGB = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 
 # matplotlib은 R,G,B로 사용 
 plt.imshow(imgRGB)
-plt.axis('off') #눈금 지우기 
+# plt.axis('off') #눈금 지우기 
 plt.show()
