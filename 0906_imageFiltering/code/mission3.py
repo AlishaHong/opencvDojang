@@ -13,6 +13,9 @@ import numpy as np
 
 src = cv2.imread('0906_imageFiltering/data/03.png')
 
+# 밝기 조절 시 그냥 add 하면 색이 틀어질 수 있다. 
+# 밝기를 단순하게 증가시키면 특정 색상이 더 강하게 보일 수 있음
+# YCbCr 채널 사용하기 
 dst1 = cv2.add(src, (10,10,10))
 dst2 = cv2.add(src, (20,20,20))
 dst3 = cv2.add(src, (30,30,30))

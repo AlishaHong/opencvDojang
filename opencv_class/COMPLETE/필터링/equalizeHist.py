@@ -43,3 +43,15 @@ plt.show()
 
 cv2.waitKey()
 cv2.destroyAllWindows()
+
+
+ycbcr_img = cv2.equalizeHist(ycbcr_img)
+hist_Y_equal = cv2.calcHist([ycbcr_img],[0],None,[256],[0,256])
+plt.plot(hist_Y_equal)
+plt.title('equalize histogram')
+plt.show()
+
+y_equal_merge = cv2.merge([ycbcr_img, Cb, Cr])
+y_equal_merge = cv2.cvtColor(y_equal_merge, cv2.COLOR_YCrCb2BGR)
+
+# cv2.imshow('ycbcr_equalize',y_equal_merge)

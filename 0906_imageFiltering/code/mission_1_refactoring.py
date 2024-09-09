@@ -30,7 +30,7 @@ def apply_sharpening(image, kernel):
 # 밝기 및 채도 조정 함수
 # 기본값을 준 상태 
 # 기본값을 없애고 함수 호춢 시 원하는 스케일을 입력하여 밝기/채도/명도를 한번에 조정할 수 있음 
-def adjust_brightness_and_saturation(image, brightness_adjust=-20, saturation_scale=0.90, brightness_scale=0.65):
+def adjust_brightness_and_saturation(image, brightness_adjust=-20, saturation_scale=0.90, brightness_scale=0.75):
     # 밝기 조정 (BGR -> HSV 변환 후 처리)
     hsv_image = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
     h, s, v = cv2.split(hsv_image)
@@ -70,9 +70,9 @@ def main():
     final_image = adjust_brightness_and_saturation(sharpened_image_fast_dst)
 
     # 결과 저장
-    save_image('0906_imageFiltering/data/mission1_complete.png', final_image)
+    save_image('0906_imageFiltering/data/mission1_complete_refactoring.png', final_image)
 
-    # 결과 출력
+    # 결과 출력dkdksldkdksksa
     cv2.imshow('Original', src)
     cv2.imshow('Median Blur', dst_median)
     cv2.imshow('Bilateral Filter', dst_bilateral)
