@@ -1,8 +1,6 @@
-# 512x512 사이즈에서 원(마우스 오른쪽 버튼), 다각형(삼각형, 사각형 포함, 마우스 왼쪽 버튼)을 그리고 
-# 리사이징 후 선 얼마나 뭉개지는지 관찰하기
-# (마우스 콜백함수로 직접 그리기를 사용+다각형 그리기(교재 52페이지참조))
-# 각각의 도형을 한번에 그릴수는 없으니 하나 그리고 저장하고 거기에 추가도형 그리는 방식으로 진행 
-# 이후 다시 부드럽게 필터링 후 축소해서 관찰하기(CV2.INTER_AREA를 사용한것과 다른 interpoltion비교)
+#1. 512x512 사이즈에서 원(마우스 오른쪽 버튼), 다각형(삼각형, 사각형 포함, 마우스 왼쪽 버튼)을 그리고 
+#2. 리사이징 후 선 얼마나 뭉개지는지 관찰하기
+#3. 이후 다시 부드럽게 필터링 후 축소해서 관찰하기(CV2.INTER_AREA를 사용한것과 다른 interpoltion비교)
 
 # shift : 그리기 모드 
 
@@ -11,7 +9,7 @@ import numpy as np
 import os.path
 
 
-# 512x512 사이즈에서 원(마우스 오른쪽 버튼), 다각형(삼각형, 사각형 포함, 마우스 왼쪽 버튼)을 그리고
+#1.  512x512 사이즈에서 원(마우스 오른쪽 버튼), 다각형(삼각형, 사각형 포함, 마우스 왼쪽 버튼)을 그리고
 
 
 # 마우스 콜백함수 정의하기 
@@ -22,24 +20,29 @@ filepath = '0909_exercise/draw.jpg'
 def mouseCallback(event, x, y, flags, param):
     global canvas, pts
     
+    # 오른쪽 버튼 클릭 이벤트 - 원그리기
     if event == cv2.EVENT_RBUTTONDOWN:
         cv2.circle(canvas, (x,y), 20, (0,0,255), 3, cv2.LINE_AA)
+        
+    # 왼쪽 버튼 클릭 이벤트 - 다각형(삼각형 or 사각형)
     elif event == cv2.EVENT_LBUTTONDOWN:
-        if flags & cv2.EVENT_FLAG_SHIFTKEY:
+        # shift : 그리기 모드 
+        if flags & cv2.EVENT_FLAG_SHIFTKEY: # SHIFT 키를 누르고 있는 동안은 좌표를 리스트에 저장
             pts.append([x,y])
             print(pts)
-        # elif not (flags & cv2.EVENT_FLAG_SHIFTKEY):
-        else:
-            numpy_pts = np.array(pts, dtype=np.int32).reshape((-1, 1, 2))
+        else:   # SHIFT 키 없이 왼쪽 마우스 클릭 시, 선 그리기
+            numpy_pts = np.array(pts, dtype=np.int32).reshape((-1, 1, 2))   #1차원 -> 2차원(np.array) -> 3차원(reshape) 배열로 변환
+            print(numpy_pts)
             cv2.polylines(canvas, [numpy_pts], isClosed=True, color=(0, 255, 0), thickness=3)
-            pts = []  # 도형을 그린 후 좌표 초기화``
+            print(f'numpy 배열 : {numpy_pts}')
+            pts = []  # 도형을 그린 후 좌표 초기화
     cv2.imshow('canvas', canvas)
     cv2.imwrite('0909_exercise/draw.jpg',canvas)
     
     
     
-# 리사이징 후 선 얼마나 뭉개지는지 관찰하기
-# 이후 다시 부드럽게 필터링 후 축소해서 관찰하기(CV2.INTER_AREA를 사용한것과 다른 interpoltion비교)
+#2. 리사이징 후 선 얼마나 뭉개지는지 관찰하기
+#3. 이후 다시 부드럽게 필터링 후 축소해서 관찰하기(CV2.INTER_AREA를 사용한것과 다른 interpoltion비교)
 
 def main():
     global canvas
