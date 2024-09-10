@@ -17,14 +17,16 @@ import os
 # 바운딩 박스가 다른 이미지를 보러 다녀와도 사라지지 않고 보존되어 있도록 
 # 딕셔너리에 전체 boxes 들을 담아서 관리 
 
+
+
 # 미완성
 # 추가 기능 2 화살표 (<-) 눌렀을때 txt 파일이 있다면 박스를 이미지 위에 띄워주면
 
 
-# corners : 좌표(startPt, endPt)
-# 2개 좌표를 이용해서 직사각형 그리기 
-
 radius = 25
+
+
+# 이미지를 한번에 불러와서 리스트화
 def getImageList():
     global dataPath
 # 현재 작업 디렉토리 확인
@@ -36,6 +38,8 @@ def getImageList():
 
 
 
+# 박스 그리기 
+# 원본이미지에 그리지 않고 박스 그리는 레이어를 추가한다.
 def drawROI(img, boxes):
     # 박스를 그릴 레이어를 생성 : cpy
     cpy = img.copy()
@@ -45,7 +49,9 @@ def drawROI(img, boxes):
     # cv2.rectangle(cpy,corners[0],corners[1], line_c, lineWidth)
     for box in boxes:
         cv2.rectangle(cpy,tuple(box[0]),tuple(box[1]), line_c, lineWidth)
-        
+       
+    
+    # 원본이미지와 박스레이어를 합쳐서 한 그림인것처럼
     # alpha = 0.3 beta = 0.7 gamma = 0
     disp = cv2.addWeighted(img,0.3,cpy,0.7,0)
     return cpy
@@ -54,9 +60,13 @@ def drawROI(img, boxes):
 # 마우스 콜백함수 정의
 def onMouse(event, x, y, flag, params):
     global startPt, img, ptList, cpy, boxes
+    # 왼쪽 버튼을 눌렀을 때 시작 좌표를 담아
     if event == cv2.EVENT_LBUTTONDOWN:
         startPt = (x,y)
         print(startPt)
+    # 왼쪽버튼 키에서 손을 뗐을때 첫 좌표와 최종 좌표를 하나의 리스트에 담은뒤
+    # 상위리스트(boxes)에 담아주고 drawROI 함수로 다 그려주기!
+    # 그린 뒤에는 좌표 초기화 
     elif event == cv2.EVENT_LBUTTONUP:
         ptList = [startPt, (x,y)]  # startPt, endPt를 list로 저장
         boxes.append(ptList)
@@ -64,6 +74,7 @@ def onMouse(event, x, y, flag, params):
         cpy = drawROI(img, boxes)
         startPt = None
         cv2.imshow('label', cpy)
+        
     # 박스 가이드라인(없어도 바운딩박스 만드는데에는 문제없음)
     elif event == cv2.EVENT_MOUSEMOVE:
         if startPt:
@@ -90,21 +101,27 @@ image_load = True
 index = 0
 img = None
 
+
+# 메인 함수
 def main():
     global image_load, index, img, boxes, all_boxes
 
+    # image_load가 true인 동안 반복
     while image_load:
         # 현재 이미지에 대해 박스가 있으면 로드, 없으면 빈 리스트로 초기화
         img = cv2.imread(fileNames[index])
+        
+        # 한번 그려진 뒤 초기화 되지않았다면 기존의 바운딩 박스들을 다시 보여줘!
         if fileNames[index] in all_boxes:
             boxes = all_boxes[fileNames[index]]
+        # 없으면 박스 없는 이미지 보여줘
         else:
             boxes = []
 
-        img_with_boxes = drawROI(img, boxes)  # 박스가 있는 이미지 생성
+        img = drawROI(img, boxes) 
         cv2.namedWindow('label')
         cv2.setMouseCallback('label', onMouse, [img])
-        cv2.imshow('label', img_with_boxes)
+        cv2.imshow('label', img)
 
         while True:
             key = cv2.waitKeyEx()
@@ -120,9 +137,9 @@ def main():
                 print(f'{filename}.txt 저장 완료!')
             elif key == ord('c'):  # 'c' 키로 박스 초기화
                 boxes = []
-                all_boxes[fileNames[index]] = boxes  # 현재 이미지의 박스 초기화
+                all_boxes[fileNames[index]] = []  # 현재 이미지의 박스 초기화
                 cv2.imshow('label', img)
-                print('Clear!')
+                print(f'{filename}.txt 초기화!')
 
             # 오른쪽 화살표
             elif key == 0x270000:
