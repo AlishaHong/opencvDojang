@@ -94,6 +94,7 @@ def onMouse(event, x, y, flag, params):
 
 boxes = []
 all_boxes = {}  # 각 이미지의 박스를 저장할 딕셔너리
+# 리스트로 해도 되지만 딕셔너리가 더 빠름(키값으로 찾으므로)
 startPt = None
 ptList = []
 fileNames = getImageList()

@@ -63,7 +63,7 @@ def rotate2(src, angle):
     return dst
 
 
-    
+
 
 src = cv2.imread('data2/rose.bmp')
 print(src.shape)    #(320,480,3)
