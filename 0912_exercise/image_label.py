@@ -287,3 +287,6 @@ if __name__ == "__main__":
 # 안되면 살짝씩 블러 처리를 해서 학습시켜 볼 예정 
 # random croping도 마우스로 원하는 영역을 설정할 수 있다고 하는데 알아봐야겠다. 
 # 우선은 우리 교재에 나온 selectROI 적용해봤는데 좀 귀찮다. 
+
+# random gamma / rangom brightness / random erasing이건 뭐지! 
+# 이호성님 블로그를 보니 별천지다
