@@ -108,20 +108,6 @@ def save_image(img, imgName, pre_img_str):
     save_path = make_save_path(imgName, pre_img_str) 
     cv2.imwrite(save_path,img)
 
-
-def adjust_brightness_and_saturation(image, saturation_scale, brightness_scale):
-    # 밝기 조정 (BGR -> HSV 변환 후 처리)
-    hsv_image = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
-    h, s, v = cv2.split(hsv_image)
-    
-    v = cv2.multiply(v, brightness_scale)
-    s = cv2.multiply(s, saturation_scale)
-    
-    adjusted_hsv_image = cv2.merge([h, s, v])
-    adjusted_bgr_image = cv2.cvtColor(adjusted_hsv_image, cv2.COLOR_HSV2BGR)
-    
-    return adjusted_bgr_image
-
 # rotate 함수
 def rotate(src, angle):
     (h,w) = src.shape[:2]
