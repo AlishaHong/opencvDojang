@@ -35,7 +35,11 @@ import random
 import numpy as np
 
 
+
 # jpg 원본 리스트 불러오기
+# 강사님 리뷰때는 dataPath와 dataOrg는 전역변수로 뺐음 
+# fileNames는 메인함수의 뺌 
+# 클래스로 만들때도 편할 듯 
 def getImageList():
     global dataPath
     dataPath = os.path.join(os.getcwd(), '0912_exercise\data')
@@ -50,15 +54,16 @@ def getImageList():
 # 이미지 읽기
 def load_image_by_name(imgName):
     fileNames = getImageList()
-    print(fileNames)
+    # baseName = os.path.basename(imgName)
+    # print(fileNames)
     for fileName in fileNames:
         if imgName in fileName:
-            print(fileName)
+            # print(fileName)
             img = cv2.imread(fileName)
             if img is None:
-                sys.exit('image load failed')
+                sys.exit(f"{imgName} 파일이 없어요!")
             return img
-    sys.exit(f"{imgName} 파일이 없어요!")
+    # sys.exit(f"{imgName} 파일이 없어요!")
 
 
 # 이미지 사이즈 조절하기 
@@ -76,13 +81,15 @@ def resize_image400(img, width=400, height=400):
 # 이미지 출력(리사이즈된 이미지) - 이제 출력은 필요없엉
 def show_image(imgName):
     img = load_image_by_name(imgName)
-    resized_img224 = resize_image224(img)
+    # resized_img224 = resize_image224(img)
     resized_img400 = resize_image400(img)
     return resized_img400
 
 
 # 저장 경로 생성 함수
+# (파일명에 따라서 저장폴더를 생성해주는 함수를 만들어 볼 예정)
 def make_save_path(imgName, pre_img_str):
+    print(f'imgName : {imgName}')
     # imgName에 포함된 키워드로 경로 설정
     if 'keyboard1' in imgName:
         folder_name = 'keyboard1'
@@ -122,10 +129,9 @@ def rotate(img, angle):
 def crop_selectROI(imgName):
     img = show_image(imgName)
     roi = cv2.selectROI(img)
-    
     if roi != (0,0,0,0):
         croped_img = img[roi[1]: roi[1]+roi[3],
-                         roi[0]:roi[0]+roi[2]]
+                         roi[0]: roi[0]+roi[2]]
         return croped_img
         
 # crop 함수 
@@ -158,7 +164,7 @@ def random_crop(img, crop_size=(224, 224)):
         cropped_img = img[y:y+crop_h, x:x+crop_w]
         return cropped_img
     else:
-        sys.exit("Error: Crop size is larger than the image size.")
+        sys.exit('error')
 
 
 # 채도와 명도 조절해보기
@@ -201,13 +207,13 @@ def pre(imgName):
 
     # 원하는 영역 자르기(selectROI)
     # 좀 더 디테일하게 이미지를 자르고 싶을 때 사용하자
-    # for i in range(5):
-    #     cropped_img = crop_selectROI(imgName)
-    #     cropped_img_224 = resize_image224(cropped_img)
-    #     save_image(cropped_img_224, imgName, f'crop_{i}')
-    #     cv2.imshow(f'crop_{i}', cropped_img_224)
-    #     cv2.waitKey()
-    #     cv2.destroyAllWindows()  
+    for i in range(2):
+        cropped_img = crop_selectROI(imgName)
+        cropped_img_224 = resize_image224(cropped_img)
+        save_image(cropped_img_224, imgName, f'crop_{i}')
+        cv2.imshow(f'crop_{i}', cropped_img_224)
+        cv2.waitKey()
+        cv2.destroyAllWindows()  
 
     # 이미지에서 랜덤 크롭  
     for i in range(20):  # 20개의 랜덤 크롭을 생성
@@ -229,8 +235,51 @@ def pre(imgName):
                 adjusted_img = adjust_brightness_and_saturation(rotated_img_224, saturation, brightness)
                 save_image(adjusted_img, imgName, f'brightness_saturation_{saturation}_{brightness}_rotate_{angle}')
     
+
+
+
+# 메인 함수 
+def main():
+    fileNames = getImageList()
+    for filename in fileNames:
+        basename = os.path.basename(filename)
+        imgname = os.path.splitext(basename)
+        pre(imgname[0]) #0이 파일명/1은 확장자
+        
+
+    
+if __name__ == "__main__":
+    main()
     
     
+    
+
+# 현재 2번 키보드 3번 키보드 분별에 문제가 있다. 
+# 색상이 비슷한 키보드이기 때문에 구분하기 어려운데 심지어 웹캠의 화질이 좋지 않아서 색 구분을 할 수 없었다. 
+# 이미지를 흐릿하게 만들어서 학습시키면 화질이 좋지않은 환경에서도 인식이 잘 되지 않을까 하는 기대를 가져본다! 
+
+# 강사님의 캠으로 테스트해보았지만 화질이 좋아진다고해서 크게 성능이 향상되지는 않았다.
+# 잘못 인식한 각도+색상 상태의 이미지를 캡쳐해서 추가로 학습시켜주니 잘 되서 허무했다. -> 과적합 위험
+# 일단 그렇게 학습시킨 데이터들은 별도로 빼놓고 
+# 채도와 명도를 조금씩 바꿔가면서 많은 데이터를 넣어봤지만 부족.. (무려 5000장인데..)
+
+# 밝기만 조절해 볼 예정 
+# 안되면 살짝씩 블러 처리를 해서 학습시켜 볼 예정 
+# random croping도 마우스로 원하는 영역을 설정할 수 있다고 하는데 알아봐야겠다. 
+# 우선은 우리 교재에 나온 selectROI 적용해봤는데 좀 귀찮다. 
+
+# random gamma / rangom brightness / random erasing이건 뭐지! 
+# 이호성님 블로그를 보니 별천지다
+
+
+
+
+
+
+
+# 이미지 이름을 명시해야 했던 지난 함수 
+
+
 # 각 이미지에 대한 전처리 실행 함수 
 # def keyboard1_white():
 #     imgName = "keyboard1_white"
@@ -258,42 +307,19 @@ def pre(imgName):
 
 
 
-# 메인 함수 
-def main():
+
+# def main():
     # keyboard1_white()
     # keyboard1_wood()
     # keyboard2_white()
     # keyboard2_wood()
     # keyboard3_white()
     # keyboard3_wood()
-    pre('keyboard1_white')
-    pre('keyboard1_wood')
-    pre('keyboard2_white')
-    pre('keyboard2_wood')
-    pre('keyboard3_white')
-    pre('keyboard3_wood')
-    
 
-    
-if __name__ == "__main__":
-    main()
-    
-    
-    
 
-# 현재 2번 키보드 3번 키보드 분별에 문제가 있다. 
-# 색상이 비슷한 키보드이기 때문에 구분하기 어려운데 심지어 웹캠의 화질이 좋지 않아서 색 구분을 할 수 없었다. 
-# 이미지를 흐릿하게 만들어서 학습시키면 화질이 좋지않은 환경에서도 인식이 잘 되지 않을까 하는 기대를 가져본다! 
-
-# 강사님의 캠으로 테스트해보았지만 화질이 좋아진다고해서 크게 성능이 향상되지는 않았다.
-# 잘못 인식한 각도+색상 상태의 이미지를 캡쳐해서 추가로 학습시켜주니 잘 되서 허무했다.
-# 일단 그렇게 학습시킨 데이터들은 별도로 빼놓고 
-# 채도와 명도를 조금씩 바꿔가면서 많은 데이터를 넣어봤지만 부족.. (무려 5000장인데..)
-
-# 밝기만 조절해 볼 예정 
-# 안되면 살짝씩 블러 처리를 해서 학습시켜 볼 예정 
-# random croping도 마우스로 원하는 영역을 설정할 수 있다고 하는데 알아봐야겠다. 
-# 우선은 우리 교재에 나온 selectROI 적용해봤는데 좀 귀찮다. 
-
-# random gamma / rangom brightness / random erasing이건 뭐지! 
-# 이호성님 블로그를 보니 별천지다
+    # pre('keyboard1_white')
+    # pre('keyboard1_wood')
+    # pre('keyboard2_white')
+    # pre('keyboard2_wood')
+    # pre('keyboard3_white')
+    # pre('keyboard3_wood')

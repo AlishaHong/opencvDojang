@@ -9,7 +9,7 @@ class ImageProcessor:
     def __init__(self, data_dir):
         self.data_dir = data_dir
         self.file_names = self.get_image_list()
-
+        
     # jpg 원본 리스트 불러오기
     def get_image_list(self):
         data_org = os.path.join(self.data_dir, 'dataOrg')
@@ -124,12 +124,12 @@ class ImageProcessor:
         adjusted_hsv_image = cv2.merge([h, s, v])
         return cv2.cvtColor(adjusted_hsv_image, cv2.COLOR_HSV2BGR)
 
-
     # 전처리 과정 실행
     def process_image(self, img_name):
         img = self.load_image_by_name(img_name)
         resize_image224 = self.resize_image224(img)
         resize_image400 = self.resize_image400(img)
+        
         # 회전 각도 적용
         angles = range(0, 361, 20)
         for angle in angles:
@@ -171,14 +171,29 @@ class ImageProcessor:
 def main():
     data_path = os.path.join(os.getcwd(), '0912_exercise/data')
     processor = ImageProcessor(data_path)   # 객체 생성
-    
-    # 각 이미지에 대한 전처리 실행
-    processor.process_image("keyboard1_white")
-    processor.process_image("keyboard1_wood")
-    processor.process_image("keyboard2_white")
-    processor.process_image("keyboard2_wood")
-    processor.process_image("keyboard3_white")
-    processor.process_image("keyboard3_wood")
 
+    for file_name in processor.file_names:
+        basename = os.path.basename(file_name)
+        img_name, _ = os.path.splitext(basename)
+        processor.process_image(img_name)
+        
 if __name__ == "__main__":
     main()
+
+
+
+
+
+
+
+# def main():
+#     data_path = os.path.join(os.getcwd(), '0912_exercise/data')
+#     processor = ImageProcessor(data_path)   # 객체 생성
+    
+#     # 각 이미지에 대한 전처리 실행
+#     processor.process_image("keyboard1_white")
+#     processor.process_image("keyboard1_wood")
+#     processor.process_image("keyboard2_white")
+#     processor.process_image("keyboard2_wood")
+#     processor.process_image("keyboard3_white")
+#     processor.process_image("keyboard3_wood")
