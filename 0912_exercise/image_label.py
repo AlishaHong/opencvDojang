@@ -109,11 +109,11 @@ def save_image(img, imgName, pre_img_str):
     cv2.imwrite(save_path,img)
 
 # rotate 함수
-def rotate(src, angle):
-    (h,w) = src.shape[:2]
+def rotate(img, angle):
+    (h,w) = img.shape[:2]
     centerPt = (w//2, h//2)
     rot = cv2.getRotationMatrix2D(centerPt, angle, 1.0)   #center/angle/scale
-    dst = cv2.warpAffine(src,rot,(w,h))
+    dst = cv2.warpAffine(img,rot,(w,h))
     return dst
 
 
@@ -201,13 +201,13 @@ def pre(imgName):
 
     # 원하는 영역 자르기(selectROI)
     # 좀 더 디테일하게 이미지를 자르고 싶을 때 사용하자
-    for i in range(5):
-        cropped_img = crop_selectROI(imgName)
-        cropped_img_224 = resize_image224(cropped_img)
-        save_image(cropped_img_224, imgName, f'crop_{i}')
-        cv2.imshow(f'crop_{i}', cropped_img_224)
-        cv2.waitKey()
-        cv2.destroyAllWindows()  
+    # for i in range(5):
+    #     cropped_img = crop_selectROI(imgName)
+    #     cropped_img_224 = resize_image224(cropped_img)
+    #     save_image(cropped_img_224, imgName, f'crop_{i}')
+    #     cv2.imshow(f'crop_{i}', cropped_img_224)
+    #     cv2.waitKey()
+    #     cv2.destroyAllWindows()  
 
     # 이미지에서 랜덤 크롭  
     for i in range(20):  # 20개의 랜덤 크롭을 생성
@@ -232,40 +232,47 @@ def pre(imgName):
     
     
 # 각 이미지에 대한 전처리 실행 함수 
-def keyboard1_white():
-    imgName = "keyboard1_white"
-    pre(imgName)
+# def keyboard1_white():
+#     imgName = "keyboard1_white"
+#     pre(imgName)
     
-def keyboard1_wood():
-    imgName = "keyboard1_wood"
-    pre(imgName)
+# def keyboard1_wood():
+#     imgName = "keyboard1_wood"
+#     pre(imgName)
 
-def keyboard2_white():
-    imgName = "keyboard2_white"
-    pre(imgName)
+# def keyboard2_white():
+#     imgName = "keyboard2_white"
+#     pre(imgName)
 
-def keyboard2_wood():
-    imgName = "keyboard2_wood"
-    pre(imgName)
+# def keyboard2_wood():
+#     imgName = "keyboard2_wood"
+#     pre(imgName)
 
-def keyboard3_white():
-    imgName = "keyboard3_white"
-    pre(imgName)
+# def keyboard3_white():
+#     imgName = "keyboard3_white"
+#     pre(imgName)
 
-def keyboard3_wood():
-    imgName = "keyboard3_wood"
-    pre(imgName)
+# def keyboard3_wood():
+#     imgName = "keyboard3_wood"
+#     pre(imgName)
 
 
 
 # 메인 함수 
 def main():
-    keyboard1_white()
-    keyboard1_wood()
-    keyboard2_white()
-    keyboard2_wood()
-    keyboard3_white()
-    keyboard3_wood()
+    # keyboard1_white()
+    # keyboard1_wood()
+    # keyboard2_white()
+    # keyboard2_wood()
+    # keyboard3_white()
+    # keyboard3_wood()
+    pre('keyboard1_white')
+    pre('keyboard1_wood')
+    pre('keyboard2_white')
+    pre('keyboard2_wood')
+    pre('keyboard3_white')
+    pre('keyboard3_wood')
+    
 
     
 if __name__ == "__main__":
