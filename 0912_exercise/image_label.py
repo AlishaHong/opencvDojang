@@ -243,8 +243,8 @@ def main():
     fileNames = getImageList()
     for filename in fileNames:
         basename = os.path.basename(filename)
-        imgname = os.path.splitext(basename)
-        pre(imgname[0]) #0이 파일명/1은 확장자
+        imgname, _ = os.path.splitext(basename)
+        pre(imgname) #0이 파일명/1은 확장자
         
 
     
