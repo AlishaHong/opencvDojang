@@ -32,8 +32,10 @@ class ImageProcessor:
     def resize_image224(self, img, width=224, height=224):
         return cv2.resize(img, (width, height))
 
+    # 조금 더 큰 사이즈(400*400)
     def resize_image400(self, img, width=400, height=400):
         return cv2.resize(img, (width, height))
+    
     # 저장 경로 생성 함수
     def make_save_path(self, img_name, pre_img_str):
         # imgName에 포함된 키워드로 경로 설정
