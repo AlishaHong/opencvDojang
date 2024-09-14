@@ -121,47 +121,54 @@ class ImageProcessor:
         return cv2.cvtColor(adjusted_hsv_image, cv2.COLOR_HSV2BGR)
 
     # 전처리 과정 실행
-    def process_image(self, img_name):
+    # 원하는 기능만 실행하도록 boolean값 줌 
+    def process_image(self, img_name, rotate_on = True, quadrants_on = True, select_roi_on = True, random_crop_on = True, sb_on = True):
         img = self.load_image_by_name(img_name)
         resize_image224 = self.resize_image224(img)
         resize_image400 = self.resize_image400(img)
         
+        
         # 회전 각도 적용
-        angles = range(0, 361, 20)
-        for angle in angles:
-            rotated_img = self.rotate(resize_image400, angle)
-            rotated_img_224 = self.resize_image224(rotated_img, width=224, height=224)
-            self.save_image(rotated_img_224, img_name, f'rotate_{angle}')
+        if rotate_on:
+            angles = range(0, 361, 20)
+            for angle in angles:
+                rotated_img = self.rotate(resize_image400, angle)
+                rotated_img_224 = self.resize_image224(rotated_img, width=224, height=224)
+                self.save_image(rotated_img_224, img_name, f'rotate_{angle}')
 
         # 4등분하기
-        quadrants = self.crop_into_quadrants(resize_image400)
-        for i, quadrant in enumerate(quadrants):
-            cropped_img_224 = self.resize_image224(quadrant)
-            self.save_image(cropped_img_224, img_name, f'quadrant_{i+1}')
+        if quadrants_on:
+            quadrants = self.crop_into_quadrants(resize_image400)
+            for i, quadrant in enumerate(quadrants):
+                cropped_img_224 = self.resize_image224(quadrant)
+                self.save_image(cropped_img_224, img_name, f'quadrant_{i+1}')
             
         # 랜덤 크롭
-        for i in range(20):
-            cropped_img = self.random_crop(resize_image400)
-            self.save_image(cropped_img, img_name, f'random_crop_{i+1}')
+        if random_crop_on:
+            for i in range(20):
+                cropped_img = self.random_crop(resize_image400)
+                self.save_image(cropped_img, img_name, f'random_crop_{i+1}')
 
         # 좀 더 디테일하게 이미지를 자르고 싶을 때 사용하자
-        for i in range(5):
-            cropped_img = self.crop_selectROI(resize_image400)
-            cropped_img_224 = self.resize_image224(cropped_img)
-            self.save_image(cropped_img_224, img_name, f'crop_{i+1}')
-            cv2.imshow(f'crop_{i+1}', cropped_img_224)
-            cv2.waitKey()
-            cv2.destroyAllWindows()  
+        if select_roi_on:
+            for i in range(5):
+                cropped_img = self.crop_selectROI(resize_image400)
+                cropped_img_224 = self.resize_image224(cropped_img)
+                self.save_image(cropped_img_224, img_name, f'crop_{i+1}')
+                cv2.imshow(f'crop_{i+1}', cropped_img_224)
+                cv2.waitKey()
+                cv2.destroyAllWindows()  
             
         # 채도, 명도 조절
-        saturation_scale = np.arange(0.4, 1.1, 0.1)
-        brightness_scale = np.arange(0.4, 1.1, 0.1)
+        if sb_on:
+            saturation_scale = np.arange(0.4, 1.1, 0.1)
+            brightness_scale = np.arange(0.4, 1.1, 0.1)
 
-        for saturation in saturation_scale:
-            for brightness in brightness_scale:
-                for angle in angles:
-                    adjusted_img = self.adjust_brightness_and_saturation(rotated_img_224, saturation, brightness)
-                    self.save_image(adjusted_img, img_name, f'brightness_saturation_{saturation:.1f}_{brightness:.1f}_rotate_{angle}')
+            for saturation in saturation_scale:
+                for brightness in brightness_scale:
+                    for angle in angles:
+                        adjusted_img = self.adjust_brightness_and_saturation(rotated_img_224, saturation, brightness)
+                        self.save_image(adjusted_img, img_name, f'brightness_saturation_{saturation:.1f}_{brightness:.1f}_rotate_{angle}')
 
 # 메인 실행 함수
 def main():
@@ -171,8 +178,8 @@ def main():
     for file_name in processor.file_names:
         basename = os.path.basename(file_name)
         img_name, _ = os.path.splitext(basename)
-        processor.process_image(img_name)
-        
+        processor.process_image(img_name, sb_on = False, select_roi_on=False)
+        # 필요하지 않은 기능은 Fasle로 바꿔서 전처리 기능을 실행하지 않음
 if __name__ == "__main__":
     main()
 

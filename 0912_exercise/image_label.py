@@ -180,57 +180,63 @@ def adjust_brightness_and_saturation(image, saturation_scale, brightness_scale):
 
 
 # 이미지 전처리 함수 모두 실행
-def pre(imgName):
+# 원하는 기능만 처리할 수 있도록 리팩토링
+def pre(imgName, rotate_on = True, quadrants_on = True, select_roi_on = True, random_crop_on = True, sb_on = True):
     resized_img = show_image(imgName)
     global cropped_img
     # rotate
     # rotate함수에 필요한 각도 리스트 
-    angles = []
-    for i in range(361):
-        if i % 20 == 0:     # 이렇게 안해도..될듯  for i in range(0,361,20)
-            angles.append(i)
+    if rotate_on:
+        angles = []
+        for i in range(361):
+            if i % 20 == 0:     # 이렇게 안해도..될듯  for i in range(0,361,20)
+                angles.append(i)
             
-    # angles 리스트의 모든 각도에 대해 돌려보자 
-    for angle in angles:
-        rotated_img = rotate(resized_img, angle)
-        rotated_img_224 = resize_image224(rotated_img, width = 224, height = 224)
-        save_image(rotated_img_224, imgName, f'rotate_{angle}')
+        # angles 리스트의 모든 각도에 대해 돌려보자 
+        for angle in angles:
+            rotated_img = rotate(resized_img, angle)
+            rotated_img_224 = resize_image224(rotated_img, width = 224, height = 224)
+            save_image(rotated_img_224, imgName, f'rotate_{angle}')
 
-    # 4등분하기
-    quadrants = crop_into_quadrants(resized_img,imgName)
-    for i, quadrant in enumerate(quadrants):
-        cropped_img_224 = resize_image224(quadrant)
-        save_image(cropped_img_224, imgName, f'quadrant_{i+1}')
+    if quadrants_on:
+        # 4등분하기
+        quadrants = crop_into_quadrants(resized_img,imgName)
+        for i, quadrant in enumerate(quadrants):
+            cropped_img_224 = resize_image224(quadrant)
+            save_image(cropped_img_224, imgName, f'quadrant_{i+1}')
 
-    # 원하는 영역 자르기(selectROI)
-    # 좀 더 디테일하게 이미지를 자르고 싶을 때 사용하자
-    for i in range(2):
-        cropped_img = crop_selectROI(imgName)
-        cropped_img_224 = resize_image224(cropped_img)
-        save_image(cropped_img_224, imgName, f'crop_{i+1}')
-        cv2.imshow(f'crop_{i}', cropped_img_224)
-        cv2.waitKey()
-        cv2.destroyAllWindows()  
+    if select_roi_on:
+        # 원하는 영역 자르기(selectROI)
+        # 좀 더 디테일하게 이미지를 자르고 싶을 때 사용하자
+        for i in range(2):
+            cropped_img = crop_selectROI(imgName)
+            cropped_img_224 = resize_image224(cropped_img)
+            save_image(cropped_img_224, imgName, f'crop_{i+1}')
+            cv2.imshow(f'crop_{i}', cropped_img_224)
+            cv2.waitKey()
+            cv2.destroyAllWindows()  
 
-    # 이미지에서 랜덤 크롭  
-    for i in range(20):  # 20개의 랜덤 크롭을 생성
-        cropped_img = random_crop(resized_img)
-        save_image(cropped_img, imgName, f'random_crop_{i+1}')  # 저장
+    if random_crop_on:
+        # 이미지에서 랜덤 크롭  
+        for i in range(20):  # 20개의 랜덤 크롭을 생성
+            cropped_img = random_crop(resized_img)
+            save_image(cropped_img, imgName, f'random_crop_{i+1}')  # 저장
 
-    # 채도, 명도 조절
-    saturation_scale = []
-    brightness_scale = []
-    for i in np.arange(0.4, 1.1, 0.1):  # 0.4에서 1.0까지 포함
-        i = format(i, ".1f")  # 소수점 첫째 자리까지 문자열로 고정
-        brightness_scale.append(float(i))
-        saturation_scale.append(float(i))
+    if sb_on:
+        # 채도, 명도 조절
+        saturation_scale = []
+        brightness_scale = []
+        for i in np.arange(0.4, 1.1, 0.1):  # 0.4에서 1.0까지 포함
+            i = format(i, ".1f")  # 소수점 첫째 자리까지 문자열로 고정
+            brightness_scale.append(float(i))
+            saturation_scale.append(float(i))
 
-    # 채도, 명도 조절하면서 rotate 결과값도 함께 for문! 모든 각도에서 채도 명도 조절 가능 (엄청 많이 나옴)
-    for saturation in saturation_scale:
-        for brightness in brightness_scale:
-            for angle in angles:
-                adjusted_img = adjust_brightness_and_saturation(rotated_img_224, saturation, brightness)
-                save_image(adjusted_img, imgName, f'brightness_saturation_{saturation}_{brightness}_rotate_{angle}')
+        # 채도, 명도 조절하면서 rotate 결과값도 함께 for문! 모든 각도에서 채도 명도 조절 가능 (엄청 많이 나옴)
+        for saturation in saturation_scale:
+            for brightness in brightness_scale:
+                for angle in angles:
+                    adjusted_img = adjust_brightness_and_saturation(rotated_img_224, saturation, brightness)
+                    save_image(adjusted_img, imgName, f'brightness_saturation_{saturation}_{brightness}_rotate_{angle}')
     
 
 
@@ -241,8 +247,8 @@ def main():
     for filename in fileNames:
         basename = os.path.basename(filename)
         imgname, _ = os.path.splitext(basename)
-        pre(imgname) #0이 파일명/1은 확장자
-        
+        pre(imgname, sb_on = False, select_roi_on= False) #0이 파일명/1은 확장자
+        # 전처리의 기본값은 true이고 원하지 않는 기능만 false로 전달 가능
 
     
 if __name__ == "__main__":
