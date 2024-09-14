@@ -88,27 +88,29 @@ def show_image(imgName):
 
 # 저장 경로 생성 함수
 # (파일명에 따라서 저장폴더를 생성해주는 함수를 만들어 볼 예정)
+# 리팩토링 완료
+# keyboard하나 당 2개의 이미지가 존재함
+# keyboard1_white/keyboard1_wood 
+# '_' 문자로 앞뒤를 분리하여 앞의 단어를 기준으로 폴더를 생성하는 방식으로 코드를 수정함 
+# _로 분리된 이미지명일 경우에만 유효함 
+
 def make_save_path(imgName, pre_img_str):
     print(f'imgName : {imgName}')
-    # imgName에 포함된 키워드로 경로 설정
-    if 'keyboard1' in imgName:
-        folder_name = 'keyboard1'
-    elif 'keyboard2' in imgName:
-        folder_name = 'keyboard2'
-    elif 'keyboard3' in imgName:
-        folder_name = 'keyboard3'
-    else:
-        folder_name = 'others'
+    
+    # imgName에서 "_" 앞의 텍스트를 폴더명으로 사용
+    folder_name = imgName.split('_')[0]
+    
     # 저장할 디렉터리 경로 생성
-    dataPrePath = os.path.join(os.getcwd(), f'0912_exercise/data/{folder_name}')
+    data_pre_path = os.path.join(os.getcwd(), f'0912_exercise/data/{folder_name}')
+    
     # 경로가 없으면 생성
-    if not os.path.exists(dataPrePath):
-        os.makedirs(dataPrePath)
-
+    if not os.path.exists(data_pre_path):
+        os.makedirs(data_pre_path)
+    
     # 파일 경로 생성
-    makeNewFileName = os.path.join(dataPrePath, f'{imgName}_{pre_img_str}.jpg')
+    makeNewFileName = os.path.join(data_pre_path, f'{imgName}_{pre_img_str}.jpg')
+    
     return makeNewFileName
-
 
 # 이미지 저장 함수
 def save_image(img, imgName, pre_img_str):
@@ -210,7 +212,7 @@ def pre(imgName):
     for i in range(2):
         cropped_img = crop_selectROI(imgName)
         cropped_img_224 = resize_image224(cropped_img)
-        save_image(cropped_img_224, imgName, f'crop_{i}')
+        save_image(cropped_img_224, imgName, f'crop_{i+1}')
         cv2.imshow(f'crop_{i}', cropped_img_224)
         cv2.waitKey()
         cv2.destroyAllWindows()  
@@ -218,7 +220,7 @@ def pre(imgName):
     # 이미지에서 랜덤 크롭  
     for i in range(20):  # 20개의 랜덤 크롭을 생성
         cropped_img = random_crop(resized_img)
-        save_image(cropped_img, imgName, f'random_crop_{i + 1}')  # 저장
+        save_image(cropped_img, imgName, f'random_crop_{i+1}')  # 저장
 
     # 채도, 명도 조절
     saturation_scale = []
@@ -278,6 +280,30 @@ if __name__ == "__main__":
 
 
 # 이미지 이름을 명시해야 했던 지난 함수 
+
+
+# 저장 경로 생성 함수
+# (파일명에 따라서 저장폴더를 생성해주는 함수를 만들어 볼 예정)
+# def make_save_path(imgName, pre_img_str):
+#     print(f'imgName : {imgName}')
+#     # imgName에 포함된 키워드로 경로 설정
+#     if 'keyboard1' in imgName:
+#         folder_name = 'keyboard1'
+#     elif 'keyboard2' in imgName:
+#         folder_name = 'keyboard2'
+#     elif 'keyboard3' in imgName:
+#         folder_name = 'keyboard3'
+#     else:
+#         folder_name = 'others'
+#     # 저장할 디렉터리 경로 생성
+#     dataPrePath = os.path.join(os.getcwd(), f'0912_exercise/data/{folder_name}')
+#     # 경로가 없으면 생성
+#     if not os.path.exists(dataPrePath):
+#         os.makedirs(dataPrePath)
+
+#     # 파일 경로 생성
+#     makeNewFileName = os.path.join(dataPrePath, f'{imgName}_{pre_img_str}.jpg')
+#     return makeNewFileName
 
 
 # 각 이미지에 대한 전처리 실행 함수 

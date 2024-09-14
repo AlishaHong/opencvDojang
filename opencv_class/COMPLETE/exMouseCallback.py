@@ -18,10 +18,12 @@ def mouse_callback(event, x, y, flags, param):
      # 전역변수를 써도 되고 
     # img = param[0]    #뭔가 좀 이상함
     global img, pt1, pt2
-
+    # 마우스를 누르면 첫 좌표가 입력되고 그 위치에 원을 그린다.
     if event == cv2.EVENT_LBUTTONDOWN:
         pt1 = (x,y)
         cv2.circle(img,pt1,5,(0,0,255), 3)
+    # 마우스를 누른 상태에서 드래그를 하며 최종 좌표에서 손을 뗀다. 
+    # 해당 좌표에도 원이 그려지면서 1번좌표/2번좌표간의 사각형을 그린다.
     elif event == cv2.EVENT_LBUTTONUP:
         pt2 = (x,y)
         cv2.circle(img,pt2,5,(0,0,255), 3)

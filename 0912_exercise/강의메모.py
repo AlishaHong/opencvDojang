@@ -57,3 +57,12 @@ def createFolder():
         classPath = os.path.join(dataOrg, classname)
         shutils.rmtree(classPath)
         os.makedirs(classPath, exist_ok=True)
+
+
+
+# DEBUG = True
+
+# if DEBUG:
+#     for fileName in fileNames:
+#         print(fileName)
+

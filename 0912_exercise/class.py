@@ -72,9 +72,7 @@ class ImageProcessor:
     # crop 함수
     # 부분별로 잘라서 일부가 나와도 인식이 잘 되도록 학습하기 위한 이미지 생성
     def crop_selectROI(self, img):
-        # img = show_image(imgName)
         roi = cv2.selectROI(img)
-        
         if roi != (0,0,0,0):
             croped_img = img[roi[1]: roi[1]+roi[3],
                             roi[0]:roi[0]+roi[2]]
@@ -146,14 +144,14 @@ class ImageProcessor:
         # 랜덤 크롭
         for i in range(20):
             cropped_img = self.random_crop(resize_image400)
-            self.save_image(cropped_img, img_name, f'random_crop_{i + 1}')
+            self.save_image(cropped_img, img_name, f'random_crop_{i+1}')
 
         # 좀 더 디테일하게 이미지를 자르고 싶을 때 사용하자
         for i in range(5):
             cropped_img = self.crop_selectROI(resize_image400)
             cropped_img_224 = self.resize_image224(cropped_img)
-            self.save_image(cropped_img_224, img_name, f'crop_{i}')
-            cv2.imshow(f'crop_{i}', cropped_img_224)
+            self.save_image(cropped_img_224, img_name, f'crop_{i+1}')
+            cv2.imshow(f'crop_{i+1}', cropped_img_224)
             cv2.waitKey()
             cv2.destroyAllWindows()  
             

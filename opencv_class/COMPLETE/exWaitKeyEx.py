@@ -37,7 +37,16 @@ while True:
         direction = 3
         y -= 10
     
-    # 경계 확인 코드 넣으면 원이 이미지 밖으로 나가지 않음 
+    # 경계 확인 코드 넣으면 원이 이미지 밖으로 나가지 않음 ㄱ
+    
+    if x - R < 0:
+        x = R
+    if x + R > width:
+        x = width - R
+    if y - R < 0:
+        y = R
+    if y + R > height:
+        y = height - R
     
     # 빈 캔버스 생성
     img = np.zeros((width, height,3), np.uint8)+255
