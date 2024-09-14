@@ -3,13 +3,14 @@ import image_load_save as load_save
 import numpy as np
 import os
 
-
-class ImageProcessingController:
+# 최종 실행 클래스
+class MainController:
     def __init__(self, data_dir):
         self.loader_saver = load_save.ImageLoaderSaver(data_dir)
-        self.processor = processor.ImageProcessor()
+        self.processor = processor.ImagePreProcessor()
 
     # 이미지 처리 실행
+    # 원하는 기능만 처리 가능
     def process_image(self, img_name, rotate_on=True, quadrants_on=True, random_crop_on=True, sb_on=True):
         img = self.loader_saver.load_image(img_name)
         
@@ -40,7 +41,7 @@ class ImageProcessingController:
 # 메인함수
 def main():
     data_path = os.path.join(os.getcwd(), '0912_exercise/data')
-    controller = ImageProcessingController(data_path)
+    controller = MainController(data_path)
 
     for img_name in controller.loader_saver.get_image_list():
         controller.process_image(img_name, sb_on=False, quadrants_on=True)

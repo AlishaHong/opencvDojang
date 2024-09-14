@@ -1,8 +1,9 @@
 import cv2
 import numpy as np
 import random
-import sys
 
+
+# 이미지 전처리 클래스
 class ImagePreProcessor:
     def __init__(self):
         pass

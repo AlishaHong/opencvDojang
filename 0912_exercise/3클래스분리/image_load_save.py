@@ -2,6 +2,8 @@ import os
 import cv2
 import sys
 
+
+# 이미지를 읽고 저장하는 클래스
 class ImageLoaderSaver:
     def __init__(self, data_dir):
         self.data_dir = data_dir
