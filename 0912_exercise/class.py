@@ -37,25 +37,23 @@ class ImageProcessor:
         return cv2.resize(img, (width, height))
     
     # 저장 경로 생성 함수
-    def make_save_path(self, img_name, pre_img_str):
-        # imgName에 포함된 키워드로 경로 설정
-        if 'keyboard1' in img_name:
-            folder_name = 'keyboard1'
-        elif 'keyboard2' in img_name:
-            folder_name = 'keyboard2'
-        elif 'keyboard3' in img_name:
-            folder_name = 'keyboard3'
-        else:
-            folder_name = 'others'
-        
+    # 리팩토링 완료
+    # keyboard하나 당 2개의 이미지가 존재함
+    # keyboard1_white/keyboard1_wood 
+    # '_' 문자로 앞뒤를 분리하여 앞의 단어를 기준으로 폴더를 생성하는 방식으로 코드를 수정함 
+    # _로 분리된 이미지명일 경우에만 유효함 
+    def make_save_path(self, imgName, pre_img_str):
+        # imgName에서 "_" 앞의 텍스트를 폴더명으로 사용
+        folder_name = imgName.split('_')[0]
         # 저장할 디렉터리 경로 생성
-        data_pre_path = os.path.join(self.data_dir, folder_name)
+        data_pre_path = os.path.join(os.getcwd(), f'0912_exercise/data/{folder_name}')
+        # 경로가 없으면 생성
         if not os.path.exists(data_pre_path):
             os.makedirs(data_pre_path)
-
         # 파일 경로 생성
-        make_new_file_name = os.path.join(data_pre_path, f'{img_name}_{pre_img_str}.jpg')
-        return make_new_file_name
+        makeNewFileName = os.path.join(data_pre_path, f'{imgName}_{pre_img_str}.jpg')
+        
+        return makeNewFileName
 
     # 이미지 저장 함수
     def save_image(self, img, img_name, pre_img_str):

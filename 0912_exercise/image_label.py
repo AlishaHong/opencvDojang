@@ -95,18 +95,13 @@ def show_image(imgName):
 # _로 분리된 이미지명일 경우에만 유효함 
 
 def make_save_path(imgName, pre_img_str):
-    print(f'imgName : {imgName}')
-    
     # imgName에서 "_" 앞의 텍스트를 폴더명으로 사용
     folder_name = imgName.split('_')[0]
-    
     # 저장할 디렉터리 경로 생성
     data_pre_path = os.path.join(os.getcwd(), f'0912_exercise/data/{folder_name}')
-    
     # 경로가 없으면 생성
     if not os.path.exists(data_pre_path):
         os.makedirs(data_pre_path)
-    
     # 파일 경로 생성
     makeNewFileName = os.path.join(data_pre_path, f'{imgName}_{pre_img_str}.jpg')
     
